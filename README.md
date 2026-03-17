@@ -19,14 +19,16 @@
 
 在终端中运行以下命令（使用 Windows 自带包管理器）：
 
+```shell
 winget install JanDeDobbeleer.OhMyPosh \-s winget
+```
 
 *(安装后建议彻底关闭并重新打开终端)*
 
 ### **2\. 下载并存放主题**
 
 1. 前往 [Oh My Posh 官方主题画廊](https://ohmyposh.dev/docs/themes) 挑选喜欢的主题。
-2. 将主题对应的 JSON 文件（例如 1\_shell.omp.json）下载或保存到你的个人目录中，推荐存放在：\~\\.poshthemes\\1\_shell.omp.json。
+2. 将主题对应的 JSON 文件（例如 `1\_shell.omp.json`）下载或保存到你的个人目录中，推荐存放在：`\~\\.poshthemes\\1\_shell.omp.json`。
 
 ## **二、 PSReadLine：历史命令智能补全**
 
@@ -34,7 +36,9 @@ winget install JanDeDobbeleer.OhMyPosh \-s winget
 
 ### **1\. 安装/更新**
 
-Install-Module \-Name PSReadLine \-AllowClobber \-Force \-Scope CurrentUser
+```shell
+  Install-Module \-Name PSReadLine \-AllowClobber \-Force \-Scope CurrentUser
+```
 
 *(如果提示需要安装 NuGet 或不受信任的存储库，输入 Y 并回车)*
 
@@ -44,7 +48,9 @@ Install-Module \-Name PSReadLine \-AllowClobber \-Force \-Scope CurrentUser
 
 ### **1\. 安装**
 
+```shell
 winget install zoxide
+```
 
 *(注意：安装后必须彻底重启终端，让系统加载新的环境变量)*
 
@@ -54,7 +60,9 @@ winget install zoxide
 
 ### **1\. 安装**
 
+```shell
 winget install eza
+```
 
 *(配置代码已集成在下方的最终 $PROFILE 模板中，我们会用它替换掉 PowerShell 原本难看的 ls)*
 
@@ -64,55 +72,63 @@ winget install eza
 
 ### **1\. 安装**
 
+```shell
 winget install gerardog.gsudo
+```
 
 ## **六、 🎯 终极 $PROFILE 配置文件**
 
 这是串联以上所有工具的核心步骤。
 
 1. 在终端中输入以下命令打开配置文件：  
-   notepad $PROFILE
 
-   *(如果提示找不到文件，先运行 New-Item \-Type File \-Path $PROFILE \-Force 创建它)*
+```shell
+notepad $PROFILE
+```
+
+   *(如果提示找不到文件，先运行 `New-Item \-Type File \-Path $PROFILE \-Force` 创建它)*
 2. 将以下完整代码粘贴进去（**请确保 Oh My Posh 的 JSON 路径与你实际存放的路径一致**）：  
-   \# \==========================================  
-   \# 1\. Oh My Posh (主题与提示符)  
-   \# \==========================================  
-   oh-my-posh init pwsh \--config "\~\\.poshthemes\\1\_shell.omp.json" | Invoke-Expression
 
-   \# \==========================================  
-   \# 2\. PSReadLine (智能补全与快捷键)  
-   \# \==========================================  
-   \# 开启基于历史记录的预测性补全  
-   Set-PSReadLineOption \-PredictionSource History  
-   \# 设置预测文本为灰色内联显示  
-   Set-PSReadLineOption \-PredictionViewStyle InlineView  
-   \# 增强上下方向键：根据当前输入过滤历史记录  
-   Set-PSReadLineKeyHandler \-Key UpArrow \-Function HistorySearchBackward  
-   Set-PSReadLineKeyHandler \-Key DownArrow \-Function HistorySearchForward
+```text
+# ==========================================
+# 1. Oh My Posh (主题与提示符)
+# ==========================================
+oh-my-posh init pwsh --config "~\.poshthemes\illusi0n.omp.json" | Invoke-Expression
 
-   \# \==========================================  
-   \# 3\. Zoxide (目录跳转)  
-   \# \==========================================  
-   Invoke-Expression (& { (zoxide init powershell | Out-String) })
+# ==========================================
+# 2. PSReadLine (智能补全与快捷键)
+# ==========================================
+# 开启基于历史记录的预测性补全
+Set-PSReadLineOption -PredictionSource History
+# 设置预测文本为灰色内联显示
+Set-PSReadLineOption -PredictionViewStyle InlineView
+# 增强上下方向键：根据当前输入过滤历史记录
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
-   \# \==========================================  
-   \# 4\. eza (现代版 ls，带图标和颜色)  
-   \# \==========================================  
-   \# 移除 PowerShell 自带的 ls 别名  
-   Remove-Item Alias:ls \-ErrorAction Ignore  
-   \# 设置 eza 函数替代原本的 ls  
-   function ls { eza \--icons=always \--color=always $args }  
-   \# 常用缩写：ll (显示详细信息), la (显示隐藏文件), lt (显示树状目录)  
-   function ll { eza \-l \--icons=always \--color=always $args }  
-   function la { eza \-la \--icons=always \--color=always $args }  
-   function lt { eza \--tree \--level=2 \--icons=always \--color=always $args }
+# ==========================================
+# 3. Zoxide (目录跳转)
+# ==========================================
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
-   \# \==========================================  
-   \# 5\. gsudo (提权别名)  
-   \# \==========================================  
-   \# 将 sudo 映射为 gsudo，贴合 Linux 使用习惯  
-   Set-Alias sudo gsudo
+# ==========================================
+# 4. eza (现代版 ls，带图标和颜色)
+# ==========================================
+# 移除 PowerShell 自带的 ls 别名
+Remove-Item Alias:ls -ErrorAction Ignore
+# 设置 eza 函数替代原本的 ls
+function ls { eza --icons=always --color=always $args }
+# 常用缩写：ll (显示详细信息), la (显示隐藏文件), lt (显示树状目录)
+function ll { eza -l --icons=always --color=always $args }
+function la { eza -la --icons=always --color=always $args }
+function lt { eza --tree --level=2 --icons=always --color=always $args }
+
+# ==========================================
+# 5. gsudo (提权别名)
+# ==========================================
+# 将 sudo 映射为 gsudo，贴合 Linux 使用习惯
+Set-Alias sudo gsudo
+```
 
 3. 保存并关闭记事本。然后在终端运行 . $PROFILE，或者直接重启终端即可生效！
 
