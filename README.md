@@ -37,7 +37,7 @@ winget install JanDeDobbeleer.OhMyPosh \-s winget
 ### **1\. 安装/更新**
 
 ```shell
-  Install-Module \-Name PSReadLine \-AllowClobber \-Force \-Scope CurrentUser
+Install-Module \-Name PSReadLine \-AllowClobber \-Force \-Scope CurrentUser
 ```
 
 *(如果提示需要安装 NuGet 或不受信任的存储库，输入 Y 并回车)*
